@@ -13,20 +13,16 @@ A **Neo-Brutalist, Registry-Driven** portfolio engineered for performance. This 
 
 Validated metrics from enterprise deployments at HCLSoftware:
 
-* 
-**⚡ 60% LCP Optimization**: Achieved through UI virtualization and advanced lazy loading.
+* **⚡ 60% LCP Optimization**: Achieved through UI virtualization and advanced lazy loading.
 
 
-* 
-**📦 40% Delivery Acceleration**: Realized via a modular Micro-frontend (MFE) architecture.
+* **📦 40% Delivery Acceleration**: Realized via a modular Micro-frontend (MFE) architecture.
 
 
-* 
-**🤖 30% Efficiency Gain**: Powered by Agentic IDEs (Windsurf/Cascade) and MCP servers to automate design-to-code pipelines.
+* **🤖 30% Efficiency Gain**: Powered by Agentic IDEs (Windsurf/Cascade) and MCP servers to automate design-to-code pipelines.
 
 
-* 
-**✅ 80%+ Test Coverage**: Maintained through strict agentic workflows and automated peer review cycles.
+* **✅ 80%+ Test Coverage**: Maintained through strict agentic workflows and automated peer review cycles.
 
 
 
@@ -36,16 +32,13 @@ Validated metrics from enterprise deployments at HCLSoftware:
 
 A trilogy of production-grade distributed systems:
 
-1. 
-**Nexus Dashboard Platform**: MFE Orchestration with a custom Widget Loader engine for 100% decoupling.
+1. **Nexus Dashboard Platform**: MFE Orchestration with a custom Widget Loader engine for 100% decoupling.
 
 
-2. 
-**Nexus-Core**: Async Audit Logging Pipeline handling **5k+ logs/sec** via Redis as a broker.
+2. **Nexus-Core**: Async Audit Logging Pipeline handling **5k+ logs/sec** via Redis as a broker.
 
 
-3. 
-**Secure-Nexus**: Enterprise IAM featuring **Keycloak SSO**, OIDC workflows, and strict JWT/RBAC validation.
+3. **Secure-Nexus**: Enterprise IAM featuring **Keycloak SSO**, OIDC workflows, and strict JWT/RBAC validation.
 
 
 
@@ -57,34 +50,26 @@ A trilogy of production-grade distributed systems:
 | --- | --- |
 | **Frontend** | React.js, Next.js 15, Tailwind CSS, Framer Motion 
 
- |
-| **Architecture** | MFE, BFF Pattern, Registry-Driven UI 
+ || **Architecture** | MFE, BFF Pattern, Registry-Driven UI 
 
- |
-| **Backend/Security** | Java, PostgreSQL, Redis, Keycloak (OIDC/OAuth2) 
+ || **Backend/Security** | Java, PostgreSQL, Redis, Keycloak (OIDC/OAuth2) 
 
- |
-| **DevOps** | Docker, Kubernetes, Jenkins CI/CD, AWS (EC2/S3) 
+ || **DevOps** | Docker, Kubernetes, Jenkins CI/CD, AWS (EC2/S3) 
 
- |
-| **Agentic** | MCP (Model Context Protocol), Windsurf, Cascade, Gemini 
+ || **Agentic** | MCP (Model Context Protocol), Windsurf, Cascade, Gemini 
 
- |
 
 ---
 
 ## 📖 Experience Highlights
 
-* 
-**Senior Software Engineer I**: Mentoring a team of 4 engineers and architecting enterprise security layers.
+* **Senior Software Engineer I**: Mentoring a team of 4 engineers and architecting enterprise security layers.
 
 
-* 
-**Software Engineer 2**: Refactored legacy Redux architecture across **10+ apps**, increasing reliability by 40%.
+* **Software Engineer 2**: Refactored legacy Redux architecture across **10+ apps**, increasing reliability by 40%.
 
 
-* 
-**Software Engineer**: Developed the Release Management Visualization module for "Velocity".
+* **Software Engineer**: Developed the Release Management Visualization module for "Velocity".
 
 
 
