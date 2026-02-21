@@ -35,23 +35,28 @@ function App() {
       const sections = ["hero", "summary", "skills", "experience", "education", "impact", "projects"];
       const scrollPosition = window.scrollY + 100; // Reduced offset for better detection
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        const element = document.getElementById(section);
-        
-        if (element) {
-          const { offsetTop } = element;
+      // Throttle scroll events for better performance
+      if (!handleScroll.lastCall || Date.now() - handleScroll.lastCall > 50) {
+        handleScroll.lastCall = Date.now();
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          const element = document.getElementById(section);
           
-          // Check if we've scrolled past this section
-          if (scrollPosition >= offsetTop - 50) {
-            setActiveSection(section);
-            break;
+          if (element) {
+            const { offsetTop } = element;
+            
+            // Check if we've scrolled past this section
+            if (scrollPosition >= offsetTop - 50) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial check
     
     return () => window.removeEventListener("scroll", handleScroll);
