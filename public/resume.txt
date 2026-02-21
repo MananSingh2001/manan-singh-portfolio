@@ -1,0 +1,46 @@
+MANAN SINGH
+Full Stack Software Engineer | Senior Software Engineer I
++91-7511171333 | manansingh11103@gmail.com | Ghaziabad, India
+LinkedIn | GitHub
+
+PROFESSIONAL SUMMARY
+Senior Software Engineer I at HCLSoftware with a track record of architecting scalable enterprise solutions. Expert in Micro-frontend (MFE) Architecture and BFF patterns, driving a 40% acceleration in feature delivery and 60% improvement in LCP. Pioneer in Agentic Development, leveraging MCP and Agentic IDEs to increase UI development efficiency by 30%.
+
+TECHNICAL SKILLS
+• Languages & Frameworks: React.js, TypeScript, Next.js 15, Node.js, Java, SQL (Postgres), GraphQL.
+• Architecture & Security: Micro-frontends, BFF Pattern, Keycloak, OIDC, OAuth2, RBAC, Registry-Driven UI.
+• Tools & DevOps: Docker, Kubernetes, AWS (EC2, S3), Jenkins CI/CD, Redis, Webpack, Redux Toolkit.
+• AI & Agentic Tools: Windsurf, Cascade, VS Code Copilot, Gemini Code Assist, MCP (Model Context Protocol).
+
+EDUCATION
+Raj Kumar Goel Institute of Technology, AKTU | B. Tech in CS (CGPA: 8.58) | July 2023
+
+WORK EXPERIENCE
+
+HCLTech (HCLSoftware) | Senior Software Engineer 1 | Oct 2025 – Present
+• Architected enterprise-grade security layers using Keycloak, implementing SSO and OIDC workflows for synchronized session management.
+• Automated translation of Figma design tokens into modular React components using MCP servers, increasing development efficiency by 30%.
+• Serving as Acting UI Lead, mentoring a team of 4 engineers in adopting agentic workflows (Cascade/Gemini) to maintain high code quality and 80%+ test coverage.
+• Promoted to E2 Band based on performance and skill criticality.
+
+HCLTech (HCLSoftware) | Software Engineer 2 | June 2024 – Sept 2025
+• Engineered a modular Micro-frontend (MFE) architecture using React and TypeScript, accelerating feature delivery by 40%.
+• Improved application performance (LCP) by 60% through UI virtualization and advanced lazy loading strategies.
+• Implemented a BFF (Backend-for-Frontend) pattern in collaboration with DevOps teams to improve workflow efficiency by 30%.
+
+HCLTech (HCLSoftware) | Software Engineer | Oct 2023 – May 2024
+• Product Development: Developed the Release Management Visualization module for "Velocity" to streamline CI/CD pipeline visibility.
+• Refactoring: Resolved state synchronization issues across 10+ apps by refactoring legacy Redux architecture, improving reliability by 40%.
+• Optimization: Reduced screen load times by 50% through memoization and optimized selectors for data-heavy dashboards.
+
+PROJECTS
+
+Nexus Dashboard Platform (AI-Ready MFE Orchestration) | Link
+• Engineered a production-grade MFE Orchestration platform with a custom Widget Loader engine for 100% decoupling.
+• Architected a Registry-Driven UI using PostgreSQL to render LLM-generated metadata and layouts without redeployment.
+
+Nexus-Core (Distributed Event Streaming) | Link
+• Built an Async Audit Logging Pipeline using Redis as a broker, handling 5k+ logs/sec with sub-10ms latency.
+
+Secure-Nexus (Enterprise IAM) | Link
+• Developed a production-ready IAM dashboard with OIDC RP-Initiated Logout and strict JWT/RBAC validation.
