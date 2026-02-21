@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+Manan Singh | Senior Software Engineer I
+Systems Architect & Agentic Development Pioneer
+A Neo-Brutalist, Registry-Driven portfolio showcasing enterprise-grade orchestration and advanced performance optimization. This project serves as a technical audit of my journey from Software Engineer to Senior Software Engineer I, emphasizing scalable architecture and developer efficiency.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚀 Key Impact Metrics
+60% LCP Improvement: Achieved through UI virtualization and advanced lazy loading strategies.
+40% Feature Delivery Acceleration: Driven by architecting modular Micro-frontend (MFE) patterns.
+30% UI Development Efficiency: Gained by leveraging Agentic IDEs (Windsurf/Cascade) and MCP servers to automate Figma-to-code translation.
+80%+ Test Coverage: Maintained via agentic workflows and mentored peer reviews.
 
-## Available Scripts
+🛠️ The Nexus Ecosystem
+This portfolio highlights the "Nexus Trilogy" of distributed systems:
+Nexus Dashboard Platform: MFE Orchestration with a custom Widget Loader engine.
+Nexus-Core: Distributed Event Streaming handling 5k+ logs/sec via Redis.
+Secure-Nexus: Enterprise IAM featuring Keycloak SSO and strict JWT/RBAC validation.
 
-In the project directory, you can run:
+🏗️ Technical Core
+Frontend: React.js, Next.js 15, Tailwind CSS, Framer Motion.
+Architecture: Micro-frontends (MFE), Backend-for-Frontend (BFF), Registry-Driven UI.
+Backend & Security: Java, PostgreSQL, Redis, Keycloak (OIDC/OAuth2/RBAC).
+DevOps: Docker, Kubernetes, Jenkins CI/CD.
+Agentic Tools: MCP (Model Context Protocol), Windsurf, Cascade, Gemini Code Assist.
 
-### `npm start`
+📖 Experience Highlights
+Senior Software Engineer I (HCLSoftware): Mentoring engineers in agentic workflows and architecting enterprise security layers.
+Software Engineer 2: Refactored legacy Redux architecture across 10+ apps, improving system reliability by 40%.
+Software Engineer: Developed "Velocity" modules to streamline CI/CD pipeline visibility.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+⚡ Quick Start
+To run this portfolio locally:
+npm install
+npm start (Runs on http://localhost:3000)
+npm run build (Production build with optimized minification)
