@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import ImpactBento from "./components/ImpactBento";
 import InfoTabs from "./components/InfoTabs";
 import SkillsSection from "./components/SkillsSection";
@@ -11,67 +11,114 @@ import TypingAnimation from "./components/TypingAnimation";
 import ParallaxSection from "./components/ParallaxSection";
 import ProjectShowcase from "./components/ProjectShowcase";
 import EducationSection from "./components/EducationSection";
+import ErrorBoundary from "./components/ErrorBoundary";
 import registry from "./data/registry.json";
 import { motion } from "framer-motion";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { MessageSquare } from "lucide-react";
+import { SCROLL_CONSTANTS } from "./constants";
 
-const downloadResume = () => {
-  const link = document.createElement("a");
-  link.href = "/data/MANAN%20SINGH_SSE.pdf";
-  link.download = "MANAN_SINGH_SSE.pdf";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+const downloadResume = async (setIsDownloadingResume) => {
+  setIsDownloadingResume(true);
+  try {
+    const link = document.createElement("a");
+    link.href = "/data/MANAN%20SINGH_SSE.pdf";
+    link.download = "MANAN_SINGH_SSE.pdf";
+    link.style.display = 'none';
+    
+    // Check if file exists before attempting download
+    const response = await fetch(link.href, { method: 'HEAD' });
+    if (!response.ok) {
+      throw new Error('Resume file not found');
+    }
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Error downloading resume:', error);
+    // Fallback: open in new tab if direct download fails
+    const fallbackLink = document.createElement("a");
+    fallbackLink.href = "/data/MANAN%20SINGH_SSE.pdf";
+    fallbackLink.target = "_blank";
+    fallbackLink.rel = "noopener noreferrer";
+    document.body.appendChild(fallbackLink);
+    fallbackLink.click();
+    document.body.removeChild(fallbackLink);
+  } finally {
+    setIsDownloadingResume(false);
+  }
 };
 
 function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isDownloadingResume, setIsDownloadingResume] = useState(false);
+  const lastScrollTime = useRef(0);
 
   // Track active section on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["hero", "summary", "skills", "experience", "education", "impact", "projects"];
-      const scrollPosition = window.scrollY + 100; // Reduced offset for better detection
+  const handleScroll = useCallback(() => {
+    const now = Date.now();
+    
+    if (now - lastScrollTime.current < SCROLL_CONSTANTS.THROTTLE_DELAY) {
+      return;
+    }
+    lastScrollTime.current = now;
 
-      // Throttle scroll events for better performance
-      if (!handleScroll.lastCall || Date.now() - handleScroll.lastCall > 50) {
-        handleScroll.lastCall = Date.now();
+    const sections = ["hero", "summary", "skills", "experience", "education", "impact", "projects"];
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
 
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = sections[i];
-          const element = document.getElementById(section);
-          
-          if (element) {
-            const { offsetTop } = element;
-            
-            // Check if we've scrolled past this section
-            if (scrollPosition >= offsetTop - 50) {
-              setActiveSection(section);
-              break;
-            }
-          }
+    // Find which section is most visible in the viewport
+    let maxVisibleArea = 0;
+    let activeSection = "hero";
+
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + scrollPosition;
+        const elementBottom = rect.bottom + scrollPosition;
+        
+        // Calculate how much of the element is visible in the viewport
+        const visibleTop = Math.max(elementTop, scrollPosition);
+        const visibleBottom = Math.min(elementBottom, scrollPosition + windowHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        
+        if (visibleHeight > maxVisibleArea) {
+          maxVisibleArea = visibleHeight;
+          activeSection = section;
         }
       }
-    };
+    }
 
+    setActiveSection(activeSection);
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial check
     
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: "smooth" });
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      });
+    }
   };
 
   return (
-    <ThemeProvider>
-      <DynamicBackground />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black transition-all duration-500 relative">
+    <ErrorBoundary>
+      <ThemeProvider>
+        <DynamicBackground />
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-black transition-all duration-500 relative">
         {/* Fixed Theme Toggle */}
         <div className="fixed top-6 right-6 z-50">
           <ThemeToggle />
@@ -174,21 +221,28 @@ function App() {
                 </div>
                 <motion.button
                   whileHover={{ 
-                    scale: 1.05,
+                    scale: isDownloadingResume ? 1 : 1.05,
                     boxShadow: '0 10px 40px rgba(139, 92, 246, 0.3)'
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={downloadResume}
-                  className="relative bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:shadow-2xl group overflow-hidden"
+                  whileTap={{ scale: isDownloadingResume ? 1 : 0.95 }}
+                  onClick={() => downloadResume(setIsDownloadingResume)}
+                  disabled={isDownloadingResume}
+                  className="relative bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:shadow-2xl group overflow-hidden disabled:opacity-75 disabled:cursor-not-allowed"
                 >
-                  <span className="relative z-10">Download Resume</span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-violet-600"
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: '0%' }}
-                    transition={{ duration: 0.5 }}
-                  />
-                  <span className="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="relative z-10">
+                    {isDownloadingResume ? 'Downloading...' : 'Download Resume'}
+                  </span>
+                  {!isDownloadingResume && (
+                    <>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-violet-600"
+                        initial={{ x: '-100%' }}
+                        whileHover={{ x: '0%' }}
+                        transition={{ duration: 0.5 }}
+                      />
+                      <span className="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </>
+                  )}
                 </motion.button>
               </motion.div>
               
@@ -303,6 +357,7 @@ function App() {
         onClose={() => setIsContactModalOpen(false)} 
       />
     </ThemeProvider>
+  </ErrorBoundary>
   );
 }
 

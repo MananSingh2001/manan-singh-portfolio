@@ -19,6 +19,13 @@ const ProjectCard = ({ project, index }) => {
   }
 };
 
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    setIsFlipped(!isFlipped);
+  }
+};
+
 const handleLinkClick = (e) => {
   e.preventDefault(); // Prevent default link behavior
   e.stopPropagation(); // Prevent event bubbling to card
@@ -26,6 +33,17 @@ const handleLinkClick = (e) => {
   const href = e.currentTarget.getAttribute('href');
   if (href) {
     window.open(href, '_blank');
+  }
+};
+
+const handleLinkKeyDown = (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    e.stopPropagation();
+    const href = e.currentTarget.getAttribute('href');
+    if (href) {
+      window.open(href, '_blank');
+    }
   }
 };
 
@@ -51,6 +69,10 @@ const LinkWrapper = ({ children, href, ...props }) => (
       viewport={{ once: true }}
       className="relative h-80 cursor-pointer"
       style={{ perspective: '1000px' }}
+      tabIndex={0}
+      role="button"
+      aria-label={`Project card: ${project.title}. Press Enter or Space to flip for more details.`}
+      onKeyDown={handleKeyDown}
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
@@ -111,7 +133,9 @@ const LinkWrapper = ({ children, href, ...props }) => (
                     rel="noopener noreferrer"
                     className="p-3 rounded-lg bg-white/30 hover:bg-white/40 transition-all hover:scale-110 cursor-pointer shadow-lg hover:shadow-xl block"
                     onClick={handleLinkClick}
+                    onKeyDown={handleLinkKeyDown}
                     title="View on GitHub"
+                    aria-label="View project on GitHub (opens in new tab)"
                   >
                     <span className="block">
                       <Github className="w-6 h-6 text-white" />
@@ -126,7 +150,9 @@ const LinkWrapper = ({ children, href, ...props }) => (
                     rel="noopener noreferrer"
                     className="p-3 rounded-lg bg-white/30 hover:bg-white/40 transition-all hover:scale-110 cursor-pointer shadow-lg hover:shadow-xl block"
                     onClick={handleLinkClick}
+                    onKeyDown={handleLinkKeyDown}
                     title="View Live Demo"
+                    aria-label="View live demo (opens in new tab)"
                   >
                     <span className="block">
                       <ExternalLink className="w-6 h-6 text-white" />
@@ -134,7 +160,7 @@ const LinkWrapper = ({ children, href, ...props }) => (
                   </LinkWrapper>
                 )}
               </div>
-              <span className="text-xs text-white/80 font-medium bg-white/10 px-2 py-1 rounded">Click to flip</span>
+              <span className="text-xs text-white/80 font-medium bg-white/10 px-2 py-1 rounded">Click or press Enter/Space to flip</span>
             </div>
           </div>
         </motion.div>
@@ -161,7 +187,9 @@ const LinkWrapper = ({ children, href, ...props }) => (
                     rel="noopener noreferrer"
                     className="p-2 rounded-lg bg-white/30 hover:bg-white/40 transition-all hover:scale-110 cursor-pointer shadow-lg hover:shadow-xl block"
                     onClick={handleLinkClick}
+                    onKeyDown={handleLinkKeyDown}
                     title="View on GitHub"
+                    aria-label="View project on GitHub (opens in new tab)"
                   >
                     <span className="block">
                       <Github className="w-5 h-5 text-white" />
@@ -175,7 +203,9 @@ const LinkWrapper = ({ children, href, ...props }) => (
                     rel="noopener noreferrer"
                     className="p-2 rounded-lg bg-white/30 hover:bg-white/40 transition-all hover:scale-110 cursor-pointer shadow-lg hover:shadow-xl block"
                     onClick={handleLinkClick}
+                    onKeyDown={handleLinkKeyDown}
                     title="View Live Demo"
+                    aria-label="View live demo (opens in new tab)"
                   >
                     <span className="block">
                       <ExternalLink className="w-5 h-5 text-white" />
@@ -214,7 +244,7 @@ const LinkWrapper = ({ children, href, ...props }) => (
             </div>
             
             <div className="text-center">
-              <span className="text-xs text-white/80 font-medium bg-white/10 px-2 py-1 rounded">Click to flip back</span>
+              <span className="text-xs text-white/80 font-medium bg-white/10 px-2 py-1 rounded">Click or press Enter/Space to flip back</span>
             </div>
           </div>
         </motion.div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
+import { FORM_CONSTANTS, ANIMATION_CONSTANTS } from '../constants';
 
 const ContactModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -10,30 +11,83 @@ const ContactModal = ({ isOpen, onClose }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length < FORM_CONSTANTS.MIN_NAME_LENGTH) {
+      newErrors.name = `Name must be at least ${FORM_CONSTANTS.MIN_NAME_LENGTH} characters`;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < FORM_CONSTANTS.MIN_MESSAGE_LENGTH) {
+      newErrors.message = `Message must be at least ${FORM_CONSTANTS.MIN_MESSAGE_LENGTH} characters`;
+    } else if (formData.message.trim().length > FORM_CONSTANTS.MAX_MESSAGE_LENGTH) {
+      newErrors.message = `Message must be less than ${FORM_CONSTANTS.MAX_MESSAGE_LENGTH} characters`;
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', message: '' });
-      onClose();
-    }, 3000);
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, ANIMATION_CONSTANTS.FORM_SUBMISSION_DELAY));
+      
+      setIsSubmitted(true);
+      
+      // Reset after success message duration
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: '', email: '', message: '' });
+        setErrors({});
+        onClose();
+      }, ANIMATION_CONSTANTS.SUCCESS_MESSAGE_DURATION);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // Handle error (could show error message to user)
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   return (
@@ -117,8 +171,15 @@ const ContactModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         placeholder="Your Name"
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className={`w-full px-4 py-3 rounded-lg border bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all ${
+                          errors.name 
+                            ? 'border-red-500 dark:border-red-400' 
+                            : 'border-gray-200 dark:border-gray-700'
+                        }`}
                       />
+                      {errors.name && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.name}</p>
+                      )}
                     </div>
                     <div>
                       <input
@@ -128,8 +189,15 @@ const ContactModal = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         placeholder="Your Email"
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className={`w-full px-4 py-3 rounded-lg border bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all ${
+                          errors.email 
+                            ? 'border-red-500 dark:border-red-400' 
+                            : 'border-gray-200 dark:border-gray-700'
+                        }`}
                       />
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.email}</p>
+                      )}
                     </div>
                     <div>
                       <textarea
@@ -139,8 +207,25 @@ const ContactModal = ({ isOpen, onClose }) => {
                         placeholder="Your Message"
                         rows={4}
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
+                        maxLength={FORM_CONSTANTS.MAX_MESSAGE_LENGTH}
+                        className={`w-full px-4 py-3 rounded-lg border bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none ${
+                          errors.message 
+                            ? 'border-red-500 dark:border-red-400' 
+                            : 'border-gray-200 dark:border-gray-700'
+                        }`}
                       />
+                      <div className="flex justify-between items-center mt-1">
+                        {errors.message && (
+                          <p className="text-sm text-red-500 dark:text-red-400">{errors.message}</p>
+                        )}
+                        <span className={`text-xs ${
+                          formData.message.length > FORM_CONSTANTS.CHARACTER_WARNING_THRESHOLD 
+                            ? 'text-orange-500 dark:text-orange-400' 
+                            : 'text-gray-500 dark:text-gray-400'
+                        }`}>
+                          {formData.message.length}/{FORM_CONSTANTS.MAX_MESSAGE_LENGTH}
+                        </span>
+                      </div>
                     </div>
                     <motion.button
                       type="submit"

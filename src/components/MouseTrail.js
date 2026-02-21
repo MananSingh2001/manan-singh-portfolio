@@ -37,14 +37,26 @@ const MouseTrail = () => {
       animationFrameRef.current = requestAnimationFrame(animateTrails);
     };
 
+    // Start animation loop
     animationFrameRef.current = requestAnimationFrame(animateTrails);
 
-    window.addEventListener('mousemove', handleMouseMove);
+    // Add event listener with error handling
+    try {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    } catch (error) {
+      console.warn('Failed to add mouse move listener:', error);
+    }
     
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      try {
+        window.removeEventListener('mousemove', handleMouseMove);
+      } catch (error) {
+        console.warn('Failed to remove mouse move listener:', error);
+      }
+      
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
   }, []);

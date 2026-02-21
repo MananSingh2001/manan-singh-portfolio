@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const TypingAnimation = ({ texts, className = "", speed = 100, deleteSpeed = 50, pauseTime = 2000 }) => {
@@ -6,42 +6,47 @@ const TypingAnimation = ({ texts, className = "", speed = 100, deleteSpeed = 50,
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const timeoutRef = useRef(null);
 
-  useEffect(() => {
+  const handleTyping = useCallback(() => {
     const currentFullText = texts[currentTextIndex];
     
-    const handleTyping = () => {
-      if (isPaused) {
-        setTimeout(() => {
-          setIsPaused(false);
-          setIsDeleting(true);
-        }, pauseTime);
-        return;
-      }
+    if (isPaused) {
+      timeoutRef.current = setTimeout(() => {
+        setIsPaused(false);
+        setIsDeleting(true);
+      }, pauseTime);
+      return;
+    }
 
-      if (isDeleting) {
-        if (currentText.length > 0) {
-          setCurrentText(currentText.slice(0, -1));
-        } else {
-          setIsDeleting(false);
-          setCurrentTextIndex((prev) => (prev + 1) % texts.length);
-        }
+    if (isDeleting) {
+      if (currentText.length > 0) {
+        setCurrentText(currentText.slice(0, -1));
       } else {
-        if (currentText.length < currentFullText.length) {
-          setCurrentText(currentFullText.slice(0, currentText.length + 1));
-        } else {
-          setIsPaused(true);
-        }
+        setIsDeleting(false);
+        setCurrentTextIndex((prev) => (prev + 1) % texts.length);
       }
-    };
+    } else {
+      if (currentText.length < currentFullText.length) {
+        setCurrentText(currentFullText.slice(0, currentText.length + 1));
+      } else {
+        setIsPaused(true);
+      }
+    }
+  }, [currentText, isDeleting, currentTextIndex, texts, pauseTime, isPaused]);
 
-    const timeout = setTimeout(
+  useEffect(() => {
+    timeoutRef.current = setTimeout(
       handleTyping,
       isDeleting ? deleteSpeed : speed
     );
 
-    return () => clearTimeout(timeout);
-  }, [currentText, isDeleting, currentTextIndex, texts, speed, deleteSpeed, pauseTime, isPaused]);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [handleTyping, isDeleting, speed, deleteSpeed]);
 
   return (
     <motion.span

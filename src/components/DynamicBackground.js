@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { MOBILE_CONSTANTS, PARTICLE_CONSTANTS, BACKGROUND_SCROLL_CONSTANTS } from '../constants';
 
 const DynamicBackground = () => {
   const { theme } = useTheme();
@@ -8,12 +9,11 @@ const DynamicBackground = () => {
   const [particles, setParticles] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
-  const animationRef = useRef(null);
 
   // Detect mobile device
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+      setIsMobile(window.innerWidth < MOBILE_CONSTANTS.BREAKPOINT || 'ontouchstart' in window);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -41,15 +41,15 @@ const DynamicBackground = () => {
 
   // Generate fewer particles for mobile
   useEffect(() => {
-    const particleCount = isMobile ? 5 : 20;
+    const particleCount = isMobile ? PARTICLE_CONSTANTS.MOBILE_COUNT : PARTICLE_CONSTANTS.DESKTOP_COUNT;
     const newParticles = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * (isMobile ? 2 : 4) + (isMobile ? 1 : 2),
-      speedX: (Math.random() - 0.5) * (isMobile ? 0.2 : 0.5),
-      speedY: (Math.random() - 0.5) * (isMobile ? 0.2 : 0.5),
-      opacity: Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.1 : 0.2)
+      size: Math.random() * (isMobile ? PARTICLE_CONSTANTS.MOBILE_MAX_SIZE - PARTICLE_CONSTANTS.MOBILE_MIN_SIZE : PARTICLE_CONSTANTS.DESKTOP_MAX_SIZE - PARTICLE_CONSTANTS.DESKTOP_MIN_SIZE) + (isMobile ? PARTICLE_CONSTANTS.MOBILE_MIN_SIZE : PARTICLE_CONSTANTS.DESKTOP_MIN_SIZE),
+      speedX: (Math.random() - 0.5) * (isMobile ? PARTICLE_CONSTANTS.MOBILE_MAX_SPEED : PARTICLE_CONSTANTS.DESKTOP_MAX_SPEED),
+      speedY: (Math.random() - 0.5) * (isMobile ? PARTICLE_CONSTANTS.MOBILE_MAX_SPEED : PARTICLE_CONSTANTS.DESKTOP_MAX_SPEED),
+      opacity: Math.random() * (isMobile ? PARTICLE_CONSTANTS.MOBILE_MAX_OPACITY - PARTICLE_CONSTANTS.MOBILE_MIN_OPACITY : PARTICLE_CONSTANTS.DESKTOP_MAX_OPACITY - PARTICLE_CONSTANTS.DESKTOP_MIN_OPACITY) + (isMobile ? PARTICLE_CONSTANTS.MOBILE_MIN_OPACITY : PARTICLE_CONSTANTS.DESKTOP_MIN_OPACITY)
     }));
     setParticles(newParticles);
   }, [theme, isMobile]);
@@ -58,6 +58,8 @@ const DynamicBackground = () => {
   useEffect(() => {
     if (isMobile) return; // Skip particle animation on mobile
 
+    let animationId = null;
+    
     const animateParticles = () => {
       setParticles(prevParticles => 
         prevParticles.map(particle => ({
@@ -66,14 +68,14 @@ const DynamicBackground = () => {
           y: (particle.y + particle.speedY + 100) % 100
         }))
       );
-      animationRef.current = requestAnimationFrame(animateParticles);
+      animationId = requestAnimationFrame(animateParticles);
     };
     
-    animationRef.current = requestAnimationFrame(animateParticles);
+    animationId = requestAnimationFrame(animateParticles);
     
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
       }
     };
   }, [isMobile]);
@@ -94,7 +96,7 @@ const DynamicBackground = () => {
     let lastScrollTime = 0;
     const handleScroll = () => {
       const now = Date.now();
-      if (now - lastScrollTime < 200) return; // Increased throttle for all devices
+      if (now - lastScrollTime < BACKGROUND_SCROLL_CONSTANTS.THROTTLE_DELAY) return; // Increased throttle for all devices
       lastScrollTime = now;
 
       const scrollY = window.scrollY;
