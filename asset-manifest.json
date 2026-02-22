@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/manan-singh-portfolio/static/css/main.d97ca801.css",
+    "main.js": "/manan-singh-portfolio/static/js/main.86f9b95e.js",
+    "static/js/453.83688084.chunk.js": "/manan-singh-portfolio/static/js/453.83688084.chunk.js",
+    "index.html": "/manan-singh-portfolio/index.html",
+    "main.d97ca801.css.map": "/manan-singh-portfolio/static/css/main.d97ca801.css.map",
+    "main.86f9b95e.js.map": "/manan-singh-portfolio/static/js/main.86f9b95e.js.map",
+    "453.83688084.chunk.js.map": "/manan-singh-portfolio/static/js/453.83688084.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d97ca801.css",
+    "static/js/main.86f9b95e.js"
+  ]
+}
