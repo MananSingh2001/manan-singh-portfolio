@@ -18,42 +18,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { MessageSquare } from "lucide-react";
 import { SCROLL_CONSTANTS } from "./constants";
 
-const downloadResume = async (setIsDownloadingResume) => {
-  setIsDownloadingResume(true);
-  try {
-    const link = document.createElement("a");
-    link.href = "/MANAN%20SINGH_SSE.pdf";
-    link.download = "MANAN_SINGH_SSE.pdf";
-    link.style.display = 'none';
-    
-    // Check if file exists before attempting download
-    const response = await fetch(link.href, { method: 'HEAD' });
-    if (!response.ok) {
-      throw new Error('Resume file not found');
-    }
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error('Error downloading resume:', error);
-    // Fallback: open in new tab if direct download fails
-    const fallbackLink = document.createElement("a");
-    fallbackLink.href = "/MANAN%20SINGH_SSE.pdf";
-    fallbackLink.target = "_blank";
-    fallbackLink.rel = "noopener noreferrer";
-    document.body.appendChild(fallbackLink);
-    fallbackLink.click();
-    document.body.removeChild(fallbackLink);
-  } finally {
-    setIsDownloadingResume(false);
-  }
-};
 
 function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isDownloadingResume, setIsDownloadingResume] = useState(false);
   const lastScrollTime = useRef(0);
 
   // Track active section on scroll
@@ -161,15 +129,25 @@ function App() {
               <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/3 to-cyan-500/5 dark:from-violet-900/10 dark:via-fuchsia-900/5 dark:to-cyan-900/10" />
               <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  initial={{ opacity: 0, y: 50, rotateX: -15 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="mb-6"
+                  style={{ perspective: "1000px" }}
                 >
-                  <h1 className="text-7xl md:text-9xl font-black bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 bg-clip-text text-transparent font-bold tracking-tight relative"
+                  <motion.h1 
+                    className="text-7xl md:text-9xl font-black bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 bg-clip-text text-transparent font-bold tracking-tight relative pb-4"
                     style={{
                       textShadow: '0 0 40px rgba(139, 92, 246, 0.3), 0 0 80px rgba(236, 72, 153, 0.2)',
-                      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+                      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+                      transformStyle: 'preserve-3d',
+                      lineHeight: '1.1'
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      rotateY: 5,
+                      rotateX: -5,
+                      transition: { duration: 0.3 }
                     }}
                   >
                     Manan Singh
@@ -177,7 +155,8 @@ function App() {
                       className="absolute -inset-4 bg-gradient-to-r from-violet-600/20 via-fuchsia-500/20 to-cyan-500/20 blur-xl rounded-lg"
                       animate={{
                         scale: [1, 1.05, 1],
-                        opacity: [0.3, 0.5, 0.3]
+                        opacity: [0.3, 0.5, 0.3],
+                        rotate: [0, 1, 0]
                       }}
                       transition={{
                         duration: 3,
@@ -185,8 +164,22 @@ function App() {
                         ease: "easeInOut",
                         delay: 2
                       }}
+                      style={{ transform: 'translateZ(-50px)' }}
                     />
-                  </h1>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-fuchsia-500/10 to-cyan-500/10 blur-2xl rounded-lg"
+                      animate={{
+                        scale: [1.2, 1.4, 1.2],
+                        opacity: [0.2, 0.4, 0.2]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1
+                      }}
+                    />
+                  </motion.h1>
                 </motion.div>
               
               <motion.p
@@ -210,79 +203,120 @@ function App() {
                 />
               </motion.p>
               
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+                className="text-lg md:text-xl text-gray-600 dark:text-gray-300 font-medium max-w-3xl mx-auto mt-6"
+              >
+                Transforming complex challenges into elegant software experiences through innovative architecture and clean code principles
+              </motion.p>
+              
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12"
+                transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+                className="flex justify-center items-center mt-12"
               >
                 <div className="flex gap-3">
                   <ContactLinks />
                 </div>
-                <motion.button
-                  whileHover={{ 
-                    scale: isDownloadingResume ? 1 : 1.05,
-                    boxShadow: '0 10px 40px rgba(139, 92, 246, 0.3)'
-                  }}
-                  whileTap={{ scale: isDownloadingResume ? 1 : 0.95 }}
-                  onClick={() => downloadResume(setIsDownloadingResume)}
-                  disabled={isDownloadingResume}
-                  className="relative bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 text-white px-10 py-4 rounded-full font-bold text-lg transition-all hover:shadow-2xl group overflow-hidden disabled:opacity-75 disabled:cursor-not-allowed"
-                >
-                  <span className="relative z-10">
-                    {isDownloadingResume ? 'Downloading...' : 'Download Resume'}
-                  </span>
-                  {!isDownloadingResume && (
-                    <>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-violet-600"
-                        initial={{ x: '-100%' }}
-                        whileHover={{ x: '0%' }}
-                        transition={{ duration: 0.5 }}
-                      />
-                      <span className="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </>
-                  )}
-                </motion.button>
               </motion.div>
               
               {/* Floating elements */}
               <motion.div
                 className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-violet-400/30 to-fuchsia-400/30 rounded-full blur-xl"
                 animate={{
-                  y: [0, -20, 0],
-                  x: [0, 10, 0]
+                  y: [0, -30, 0],
+                  x: [0, 15, 0],
+                  rotateZ: [0, 180, 360],
+                  scale: [1, 1.2, 1]
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 6,
                   repeat: Infinity,
                   ease: "easeInOut"
+                }}
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px'
+                }}
+                whileHover={{ 
+                  scale: 1.5,
+                  rotateX: 45,
+                  transition: { duration: 0.3 }
                 }}
               />
               <motion.div
                 className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-cyan-400/30 to-blue-400/30 rounded-full blur-lg"
                 animate={{
-                  y: [0, 15, 0],
-                  x: [0, -15, 0]
+                  y: [0, 25, 0],
+                  x: [0, -20, 0],
+                  rotateY: [0, 360, 0],
+                  scale: [1, 0.8, 1]
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut",
                   delay: 1
+                }}
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px'
+                }}
+                whileHover={{ 
+                  scale: 1.3,
+                  rotateZ: 90,
+                  transition: { duration: 0.3 }
                 }}
               />
               <motion.div
                 className="absolute bottom-40 left-1/4 w-24 h-24 bg-gradient-to-br from-pink-400/20 to-rose-400/20 rounded-full blur-2xl"
                 animate={{
-                  y: [0, -10, 0],
-                  x: [0, 20, 0]
+                  y: [0, -15, 0],
+                  x: [0, 30, 0],
+                  rotateX: [0, 180, 0],
+                  scale: [1, 1.1, 1]
                 }}
                 transition={{
-                  duration: 5,
+                  duration: 8,
                   repeat: Infinity,
                   ease: "easeInOut",
                   delay: 2
+                }}
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px'
+                }}
+                whileHover={{ 
+                  scale: 1.4,
+                  rotateY: 45,
+                  transition: { duration: 0.3 }
+                }}
+              />
+              <motion.div
+                className="absolute top-1/3 right-1/4 w-12 h-12 bg-gradient-to-br from-emerald-400/25 to-teal-400/25 rounded-full blur-lg"
+                animate={{
+                  y: [0, -40, 0],
+                  x: [0, -25, 0],
+                  rotate: [0, -360, 0],
+                  scale: [0.8, 1.3, 0.8]
+                }}
+                transition={{
+                  duration: 7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 3
+                }}
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  perspective: '1000px'
+                }}
+                whileHover={{ 
+                  scale: 1.6,
+                  rotateX: 30,
+                  transition: { duration: 0.3 }
                 }}
               />
             </div>
