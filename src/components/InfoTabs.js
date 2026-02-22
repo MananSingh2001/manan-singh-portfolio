@@ -46,7 +46,7 @@ const InfoTabs = ({ data }) => {
               
               {/* Badge - Fixed positioning */}
               <motion.div
-                className={`absolute -top-2 right-4 px-3 py-1 rounded-full text-xs font-bold text-white ${exp.accent} shadow-lg z-20`}
+                className={`absolute -top-2 right-4 px-3 py-1 rounded-full text-xs font-bold text-white ${exp.accent} shadow-lg z-20 yellow-border`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: idx * 0.1 + 0.2 }}

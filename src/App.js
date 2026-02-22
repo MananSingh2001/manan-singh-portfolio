@@ -22,7 +22,7 @@ const downloadResume = async (setIsDownloadingResume) => {
   setIsDownloadingResume(true);
   try {
     const link = document.createElement("a");
-    link.href = "/data/MANAN%20SINGH_SSE.pdf";
+    link.href = "/MANAN%20SINGH_SSE.pdf";
     link.download = "MANAN_SINGH_SSE.pdf";
     link.style.display = 'none';
     
@@ -39,7 +39,7 @@ const downloadResume = async (setIsDownloadingResume) => {
     console.error('Error downloading resume:', error);
     // Fallback: open in new tab if direct download fails
     const fallbackLink = document.createElement("a");
-    fallbackLink.href = "/data/MANAN%20SINGH_SSE.pdf";
+    fallbackLink.href = "/MANAN%20SINGH_SSE.pdf";
     fallbackLink.target = "_blank";
     fallbackLink.rel = "noopener noreferrer";
     document.body.appendChild(fallbackLink);

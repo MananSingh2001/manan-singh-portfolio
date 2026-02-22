@@ -32,3 +32,13 @@ code {
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+.yellow-border {
+  background-color: #FFD700;
+  color: #1a1a1a;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  display: inline-block;
+  margin: 2px;
+  font-weight: bold;
+}
